@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "italic-serif-display",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-26T15:31:12.979Z",
+        "reason": "user-supplied reference images (aesthetic-clinic heroes) pin a high-contrast serif display with italic accents"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-26T15:31:13.111Z",
+        "reason": "user-supplied reference images pin a nude/porcelain clinic palette as the brand ground"
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+# ferramentas locais
+.claude/
+
+# arquivos de trabalho do Impeccable (capturas e rascunhos)
+.impeccable/review/
+.impeccable/mocks/
+.impeccable/questions/
+.impeccable/decision-payload.json
+.impeccable/config.local.json
+
+# sistema
+Thumbs.db
+.DS_Store
+.impeccable/hook.cache.json
