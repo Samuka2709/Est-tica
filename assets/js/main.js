@@ -345,11 +345,13 @@ window.addEventListener("load", () => {
   // 3. fotos aparecem como uma cortina subindo, com um leve zoom saindo
   $$("[data-foto]").forEach((fig) => {
     const img = fig.querySelector("img");
-    const arco = fig.classList.contains("arco");
-    const r = arco ? " round 999px 999px 4px 4px" : "";
-    gsap.timeline({ scrollTrigger: { trigger: fig, start: "top 88%", once: true } })
-      .fromTo(fig, { clipPath: `inset(100% 0% 0% 0%${r})` }, { clipPath: `inset(0% 0% 0% 0%${r})`, duration: 1.3, ease: "expo.inOut", clearProps: "clipPath" })
+    const alvo = fig.querySelector(".moldura__foto") || fig;
+    const linha = fig.classList.contains("moldura");
+    const tl = gsap.timeline({ scrollTrigger: { trigger: fig, start: "top 88%", once: true } })
+      .fromTo(alvo, { clipPath: "inset(100% 0% 0% 0% round 8px)" }, { clipPath: "inset(0% 0% 0% 0% round 8px)", duration: 1.3, ease: "expo.inOut", clearProps: "clipPath" })
       .fromTo(img, { scale: 1.3 }, { scale: 1.1, duration: 1.8, ease: "expo.out" }, 0.1);
+    // a linha da moldura aparece depois da foto, deslizando para o lugar
+    if (linha) tl.fromTo(fig, { "--linha": 0 }, { "--linha": 1, duration: 1, ease: "expo.out" }, 0.5);
     // depois de revelada, a foto continua respirando devagar com a rolagem
     gsap.fromTo(img, { yPercent: -4 }, { yPercent: 4, ease: "none",
       scrollTrigger: { trigger: fig, start: "top bottom", end: "bottom top", scrub: true } });

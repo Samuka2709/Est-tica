@@ -189,12 +189,17 @@ p, dd, li span, .item > p { margin: 0; text-wrap: pretty; }
 .agenda__previa-rotulo { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--texto-2); }
 
 /* ---------- arcos ---------- */
-.arco { margin: 0; overflow: hidden; border-radius: 999px 999px var(--raio) var(--raio); background: var(--areia); }
-.arco img, .card__foto img { width: 100%; height: 100%; object-fit: cover; will-change: transform; }
+/* moldura: foto de cantos suaves com uma linha fina deslocada atrás, como um passe-partout */
+.moldura { position: relative; margin: 0; }
+.moldura::before { content: ""; position: absolute; inset: 22px -22px -22px 22px; border: 1px solid var(--taupe); border-radius: 8px; pointer-events: none;
+  opacity: calc(.5 * var(--linha, 1)); translate: calc((1 - var(--linha, 1)) * -22px) calc((1 - var(--linha, 1)) * -22px); }
+.moldura--perguntas::before { inset: 22px 22px -22px -22px; }
+.moldura__foto { position: relative; height: 100%; overflow: hidden; border-radius: 8px; background: var(--areia); box-shadow: 0 30px 60px -36px rgba(35, 27, 23, .45); }
+.moldura__foto img, .card__foto img { width: 100%; height: 100%; object-fit: cover; will-change: transform; }
 
 /* ---------- princípios ---------- */
 .principios { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 48px; align-items: center; padding: var(--secao) var(--margem); max-width: 1720px; margin: 0 auto; }
-.arco--principios { grid-column: 1 / span 5; aspect-ratio: 4 / 5; }
+.moldura--principios { grid-column: 1 / span 5; aspect-ratio: 4 / 5; }
 .principios__texto { grid-column: 7 / -1; display: grid; gap: clamp(28px, 4vw, 48px); }
 .principios__lista { margin: 0; }
 .principios__lista > div { padding: 22px 0; border-top: 1px solid var(--linha); }
@@ -298,7 +303,7 @@ p, dd, li span, .item > p { margin: 0; text-wrap: pretty; }
 
 /* ---------- perguntas ---------- */
 .perguntas { background: var(--areia); padding: var(--secao) var(--margem); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 48px; align-items: start; }
-.arco--perguntas { grid-column: 1 / span 4; aspect-ratio: 3 / 4.3; position: sticky; top: 110px; }
+.moldura--perguntas { grid-column: 1 / span 4; aspect-ratio: 3 / 4.3; position: sticky; top: 110px; }
 .perguntas__texto { grid-column: 6 / -1; display: grid; gap: 30px; }
 .perguntas__lista { list-style: none; padding: 0; margin: 0; counter-reset: q; }
 .perguntas__lista li { counter-increment: q; display: grid; grid-template-columns: 3rem 1fr; column-gap: 10px; row-gap: 6px; padding: 24px 0; border-top: 1px solid var(--linha); }
@@ -310,14 +315,15 @@ p, dd, li span, .item > p { margin: 0; text-wrap: pretty; }
 .equipe { padding: var(--secao) var(--margem); }
 .pessoas { list-style: none; padding: 0; margin: 0 auto; max-width: 1200px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 3vw, 48px); text-align: center; }
 .pessoa { display: grid; justify-items: center; gap: 8px; }
-.pessoa__retrato { width: 112px; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: var(--areia); border: 1px solid var(--linha); font: italic 400 2.2rem/1 var(--f-display); color: var(--taupe); margin-bottom: 10px; }
+.pessoa__retrato { width: 100%; max-width: 320px; aspect-ratio: 3 / 4; margin: 0 0 18px; border-radius: 8px; overflow: hidden; background: var(--areia); box-shadow: 0 30px 60px -36px rgba(35, 27, 23, .45); }
+.pessoa__retrato img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; will-change: transform; }
 .pessoa h3 { font: 400 1.45rem/1.2 var(--f-display); color: var(--taupe-escuro); margin: 0; }
 .pessoa p { color: var(--texto-2); font-weight: 300; max-width: 34ch; }
 .pessoa__registro { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--texto) !important; font-variant-numeric: tabular-nums; }
 
 /* ---------- espaço ---------- */
 .espaco { background: var(--areia); padding: var(--secao) var(--margem); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 40px; align-items: center; }
-.arco--espaco { grid-column: 2 / span 4; aspect-ratio: 3 / 4.2; }
+.moldura--espaco { grid-column: 2 / span 4; aspect-ratio: 3 / 4.2; }
 .espaco__texto { grid-column: 7 / span 5; display: grid; gap: 24px; }
 .espaco__texto > p { color: var(--texto-2); font-weight: 300; max-width: 42ch; }
 .info { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
@@ -385,10 +391,10 @@ p, dd, li span, .item > p { margin: 0; text-wrap: pretty; }
   .agenda__envio .botao { min-height: 56px; }
 
   .principios, .perguntas, .espaco { grid-template-columns: minmax(0, 1fr); }
-  .arco--principios, .principios__texto, .arco--perguntas, .perguntas__texto, .arco--espaco, .espaco__texto { grid-column: 1; }
-  .arco--principios { aspect-ratio: 4 / 4.4; }
-  .arco--perguntas { position: relative; top: 0; aspect-ratio: 4 / 4.4; }
-  .arco--espaco { aspect-ratio: 4 / 4.6; }
+  .moldura--principios, .principios__texto, .moldura--perguntas, .perguntas__texto, .moldura--espaco, .espaco__texto { grid-column: 1; }
+  .moldura--principios { aspect-ratio: 4 / 4.4; }
+  .moldura--perguntas { position: relative; top: 0; aspect-ratio: 4 / 4.4; }
+  .moldura--espaco { aspect-ratio: 4 / 4.6; }
 
   .tabela__linha { grid-template-columns: minmax(0, 1fr); row-gap: 8px; }
   .tabela__linha--cabeca { display: none; }
