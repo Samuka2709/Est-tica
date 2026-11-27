@@ -177,6 +177,7 @@ p, dd, li span, .item > p { margin: 0; text-wrap: pretty; }
 .chip input:focus-visible + span { outline: 1.5px solid var(--taupe-escuro); outline-offset: 2px; }
 .chip input:disabled + span { opacity: .4; cursor: not-allowed; }
 .campo { display: grid; gap: 8px; margin: 0; font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--texto-2); }
+.escolha legend em { font-style: normal; text-transform: none; letter-spacing: 0; font-size: .82rem; margin-left: .4em; color: var(--texto-2); }
 .campo em { font-style: normal; text-transform: none; letter-spacing: 0; }
 .campo input {
   min-height: 54px; padding: 0 16px; border: 1px solid var(--linha); border-radius: 2px; background: var(--porcelana);

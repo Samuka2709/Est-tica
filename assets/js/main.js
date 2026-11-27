@@ -24,8 +24,10 @@ const DIA = 864e5;
   const montar = () => {
     const f = new FormData(form);
     const nome = (f.get("nome") || "").toString().trim();
-    const interesse = (f.get("interesse") || "").toString().toLowerCase();
-    const periodo = f.get("periodo");
+    // junta várias escolhas em português: "a", "a e b", "a, b e c"
+    const juntar = (lista, conector) => lista.length < 2 ? (lista[0] || "") : `${lista.slice(0, -1).join(", ")} ${conector} ${lista.at(-1)}`;
+    const interesse = juntar(f.getAll("interesse").map((v) => v.toString().toLowerCase()), "e");
+    const periodo = juntar(f.getAll("periodo").map(String), "ou");
     let t = "Olá! Vim pelo site e quero agendar uma avaliação.";
     if (interesse) t += ` Interesse: ${interesse}.`;
     if (periodo) t += ` Melhor período: ${periodo}.`;
