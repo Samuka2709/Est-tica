@@ -31,10 +31,52 @@ const DIA = 864e5;
     let t = "Olá! Vim pelo site e quero agendar uma avaliação.";
     if (interesse) t += ` Interesse: ${interesse}.`;
     if (periodo) t += ` Melhor período: ${periodo}.`;
+    const horarios = juntar($$("[data-vaga][aria-pressed='true']").map((b) => b.dataset.vaga), "ou");
+    if (horarios) t += ` Horários que me servem: ${horarios}.`;
     if (nome) t += ` Meu nome é ${nome}.`;
     return t;
   };
   const atualizar = () => { previa.textContent = montar(); };
+
+  /* horários livres de exemplo: próximos 3 dias abertos, sempre os mesmos para a mesma data */
+  const vagas = $("[data-vagas]");
+  const lista = $("[data-vagas-lista]");
+  if (vagas && lista) {
+    const p = new Intl.DateTimeFormat("en-CA", { timeZone: CONFIG.fuso, year: "numeric", month: "2-digit", day: "2-digit", hour: "numeric", minute: "numeric", hourCycle: "h23" }).formatToParts(new Date());
+    const g = (t) => +p.find((x) => x.type === t).value;
+    const hojeUTC = Date.UTC(g("year"), g("month") - 1, g("day"), 12);
+    const agora = g("hour") + g("minute") / 60;
+    const hm = (h) => `${Math.floor(h)}h${h % 1 ? "30" : ""}`;
+    const sorteio = (semente) => () => ((semente = (semente * 9301 + 49297) % 233280) / 233280);
+    const dias = [];
+    for (let i = 0; dias.length < 3 && i < 10; i++) {
+      const d = new Date(hojeUTC + i * DIA);
+      const hr = CONFIG.horario[d.getUTCDay()];
+      if (!hr) continue;
+      const rnd = sorteio(d.getUTCFullYear() * 400 + d.getUTCMonth() * 31 + d.getUTCDate());
+      const livres = [];
+      for (let h = hr[0]; h <= hr[1] - 1; h += 0.5) if (i > 0 || h >= agora + 1.5) livres.push(h);
+      const escolhidos = livres.sort(() => rnd() - 0.5).slice(0, 3).sort((a, b) => a - b);
+      if (!escolhidos.length) continue;
+      const semana = d.toLocaleDateString("pt-BR", { weekday: "short", timeZone: "UTC" }).replace(".", "");
+      const data = d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", timeZone: "UTC" });
+      const rotulo = i === 0 ? "Hoje" : i === 1 ? "Amanhã" : semana[0].toUpperCase() + semana.slice(1);
+      dias.push({ rotulo, data, semana, i, escolhidos });
+    }
+    lista.innerHTML = dias.map(({ rotulo, data, semana, i, escolhidos }) => `
+      <li class="vagas__dia">
+        <span class="vagas__data"><strong>${rotulo}</strong> ${data}</span>
+        <span class="vagas__horas">${escolhidos.map((h) => `<button type="button" class="vagas__hora" aria-pressed="false" data-vaga="${i === 0 ? "hoje" : i === 1 ? "amanhã" : semana} (${data}) às ${hm(h)}">${hm(h)}</button>`).join("")}</span>
+      </li>`).join("");
+    lista.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-vaga]");
+      if (!b) return;
+      b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") === "true" ? "false" : "true");
+      atualizar();
+    });
+    if (dias.length) vagas.hidden = false;
+  }
+
   form.addEventListener("input", atualizar);
   form.addEventListener("change", atualizar);
   form.addEventListener("submit", (e) => {

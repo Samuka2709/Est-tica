@@ -159,6 +159,24 @@ p, dd, li span, .item > p { margin: 0; text-wrap: pretty; }
 .status__ponto { width: 8px; height: 8px; border-radius: 50%; background: var(--linha); flex: none; }
 .status.is-aberto { color: var(--texto); }
 .status.is-aberto .status__ponto { background: #6E9A7C; box-shadow: 0 0 0 4px rgba(110, 154, 124, .18); }
+.vagas { max-width: 30rem; margin-top: 6px; border-top: 1px solid var(--linha); padding-top: 22px; }
+.vagas[hidden] { display: none; }
+.vagas__titulo { margin: 0 0 6px; font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--texto-2); }
+.vagas__titulo em { font-style: normal; text-transform: none; letter-spacing: 0; font-size: .82rem; margin-left: .4em; }
+.vagas__dias { list-style: none; margin: 0; padding: 0; }
+.vagas__dia { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--linha); }
+.vagas__data { font-size: .92rem; color: var(--texto-2); white-space: nowrap; }
+.vagas__data strong { font-family: var(--f-display); font-weight: 400; font-size: 1.2rem; color: var(--texto); margin-right: .3em; }
+.vagas__horas { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+.vagas__hora {
+  min-height: 36px; min-width: 64px; padding: 0 12px; border: 1px solid var(--linha); border-radius: 999px;
+  background: var(--linho); font: inherit; font-size: .9rem; color: var(--texto); cursor: pointer;
+  transition: background-color .25s var(--ease), border-color .25s var(--ease), color .25s var(--ease);
+}
+.vagas__hora:hover { border-color: var(--taupe); }
+.vagas__hora[aria-pressed="true"] { background: var(--cacau); border-color: var(--cacau); color: var(--claro); }
+.vagas__hora:focus-visible { outline: 1.5px solid var(--taupe-escuro); outline-offset: 2px; }
+.vagas__nota { margin: 12px 0 0; font-size: .84rem; color: var(--texto-2); }
 
 .agenda { grid-column: 7 / -1; background: var(--linho); padding: clamp(22px, 3vw, 44px); box-shadow: 0 30px 60px -40px rgba(35, 27, 23, .35); }
 .escolha { border: 0; padding: 0; margin: 0 0 20px; min-width: 0; }
